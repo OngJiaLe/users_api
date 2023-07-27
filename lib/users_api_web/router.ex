@@ -1,12 +1,15 @@
 defmodule UsersApiWeb.Router do
   use UsersApiWeb, :router
+
   pipeline :api do
     plug :accepts, ["json"]
   end
+
   scope "/api", UsersApiWeb do
     pipe_through :api
     resources "/users", UserController, except: [:new, :edit]
   end
+
   # Enables LiveDashboard only for development
   #
   # If you want to use the LiveDashboard in production, you should put
@@ -16,6 +19,7 @@ defmodule UsersApiWeb.Router do
   # as long as you are also using SSL (which you should anyway).
   if Mix.env() in [:dev, :test] do
     import Phoenix.LiveDashboard.Router
+
     scope "/" do
       pipe_through [:fetch_session, :protect_from_forgery]
       live_dashboard "/dashboard", metrics: UsersApiWeb.Telemetry
